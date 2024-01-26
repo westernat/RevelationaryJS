@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"id": "revjs",
+	"version": "${version}",
+	"name": "RevelationaryJS",
+	"description": "Use Revelationary API by KubeJS",
+	"authors": [
+		"Westernat"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/revjs/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"org.mesdag.revjs.RevJS"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.15.6",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"kubejs": ">=2001.6.4-build.120",
+		"revelationary": "*",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"advjs": "*"
+	}
+}
