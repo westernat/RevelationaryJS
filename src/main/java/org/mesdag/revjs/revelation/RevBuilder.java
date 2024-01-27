@@ -3,6 +3,8 @@ package org.mesdag.revjs.revelation;
 import com.google.gson.JsonObject;
 import dev.latvian.mods.kubejs.block.predicate.BlockIDPredicate;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
+import dev.latvian.mods.kubejs.typings.Info;
+import dev.latvian.mods.kubejs.typings.Param;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -25,17 +27,38 @@ public class RevBuilder {
         this.advancement = advancement;
     }
 
+    @Info(params = {
+            @Param(name = "sourceItem"),
+            @Param(name = "targetItem")
+    })
     public RevBuilder cloakItem(Item sourceItem, Item targetItem) {
         items.put(sourceItem, targetItem);
         return this;
     }
 
+    @Info(value = """
+            Accepts
+
+                BlockState,
+
+                BlockIDPredicate: Block.id()
+
+                Stringify blockState: 'blockId[state=value,]'
+
+                Block
+
+                BlockContainerJS
+            """,
+            params = {
+                    @Param(name = "sourceBlock"),
+                    @Param(name = "targetBlock")
+            })
     public RevBuilder cloakBlockState(Object sourceBlock, Object targetBlock) {
         blocks_states.put(getState(sourceBlock), getState(targetBlock));
         return this;
     }
 
-    static BlockState getState(Object object) {
+    public static BlockState getState(Object object) {
         if (object instanceof BlockState state) {
             return state;
         } else if (object instanceof BlockIDPredicate predicate) {
@@ -54,11 +77,19 @@ public class RevBuilder {
         return Blocks.AIR.getDefaultState();
     }
 
+    @Info(params = {
+            @Param(name = "sourceItem"),
+            @Param(name = "targetText")
+    })
     public RevBuilder replaceItemName(Item sourceItem, String targetText) {
         item_name_replacements.put(sourceItem, targetText);
         return this;
     }
 
+    @Info(params = {
+            @Param(name = "sourceBlock"),
+            @Param(name = "targetText")
+    })
     public RevBuilder replaceBlockName(Block sourceBlock, String targetText) {
         block_name_replacements.put(sourceBlock.asItem(), targetText);
         return this;

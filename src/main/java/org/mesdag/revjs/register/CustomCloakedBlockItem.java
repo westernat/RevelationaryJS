@@ -9,19 +9,22 @@ import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.revjs.revelation.RevBuilder;
 
+import java.util.Hashtable;
 import java.util.Map;
 
 public class CustomCloakedBlockItem extends BlockItem implements RevelationAware {
     private final Identifier cloakAdvancement;
     private final Block cloakBlock;
-    private final Map<BlockState, BlockState> map;
+    private final Map<Object, Object> objectMap;
+    private Map<BlockState, BlockState> blockStateMap;
 
-    public CustomCloakedBlockItem(Block block, Item.Settings settings, Identifier cloakAdvancement, Block cloakBlock, Map<BlockState, BlockState> map) {
+    public CustomCloakedBlockItem(Block block, Item.Settings settings, Identifier cloakAdvancement, Block cloakBlock, Map<Object, Object> objectMap) {
         super(block, settings);
         this.cloakAdvancement = cloakAdvancement;
         this.cloakBlock = cloakBlock;
-        this.map = map;
+        this.objectMap = objectMap;
         RevelationAware.register(this);
     }
 
@@ -32,7 +35,13 @@ public class CustomCloakedBlockItem extends BlockItem implements RevelationAware
 
     @Override
     public Map<BlockState, BlockState> getBlockStateCloaks() {
-        return map == null ? Map.of(getBlock().getDefaultState(), cloakBlock.getDefaultState()) : map;
+        if (objectMap == null) {
+            return Map.of(getBlock().getDefaultState(), cloakBlock.getDefaultState());
+        } else if (blockStateMap == null) {
+            blockStateMap = new Hashtable<>();
+            objectMap.forEach((key, value) -> blockStateMap.put(RevBuilder.getState(key), RevBuilder.getState(value)));
+        }
+        return blockStateMap;
     }
 
     @Override
@@ -41,20 +50,24 @@ public class CustomCloakedBlockItem extends BlockItem implements RevelationAware
     }
 
     public static class Builder extends BlockItemBuilder {
-        private final Identifier cloakAdvancement;
-        private final Block cloakBlock;
-        private final Map<BlockState, BlockState> map;
+        private Identifier cloakAdvancement;
+        private Block cloakBlock;
+        private Map<Object, Object> objectMap;
 
-        public Builder(Identifier identifier, Identifier cloakAdvancement, Block cloakBlock, Map<BlockState, BlockState> map) {
+        public Builder(Identifier identifier) {
             super(identifier);
+        }
+
+        public Builder syncData(Identifier cloakAdvancement, Block cloakBlock, Map<Object, Object> objectMap) {
             this.cloakAdvancement = cloakAdvancement;
             this.cloakBlock = cloakBlock;
-            this.map = map;
+            this.objectMap = objectMap;
+            return this;
         }
 
         @Override
         public Item createObject() {
-            return new CustomCloakedBlockItem(blockBuilder.get(), createItemProperties(), cloakAdvancement, cloakBlock, map);
+            return new CustomCloakedBlockItem(blockBuilder.get(), createItemProperties(), cloakAdvancement, cloakBlock, objectMap);
         }
     }
 }

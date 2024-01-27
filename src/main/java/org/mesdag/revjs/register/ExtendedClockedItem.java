@@ -2,6 +2,8 @@ package org.mesdag.revjs.register;
 
 import de.dafuqs.revelationary.api.revelations.CloakedItem;
 import dev.latvian.mods.kubejs.item.ItemBuilder;
+import dev.latvian.mods.kubejs.typings.Info;
+import dev.latvian.mods.kubejs.typings.Param;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.text.MutableText;
@@ -56,8 +58,9 @@ public class ExtendedClockedItem extends CloakedItem {
             super(identifier);
         }
 
-        public Builder cloakAdvancement(Identifier identifier) {
-            this.cloakAdvancement = identifier;
+        @Info(params = @Param(name = "advancementId"))
+        public Builder cloakAdvancement(Identifier advancementId) {
+            this.cloakAdvancement = advancementId;
             return this;
         }
 
@@ -66,11 +69,13 @@ public class ExtendedClockedItem extends CloakedItem {
             return this;
         }
 
+        @Info("Called after this block on cloak.")
         public Builder onCloak(OnCloakCallback callback) {
             this.onCloakCallback = callback;
             return this;
         }
 
+        @Info("Called after this block on uncloak.")
         public Builder onUnCloak(OnUnCloakCallback callback) {
             this.onUnCloakCallback = callback;
             return this;

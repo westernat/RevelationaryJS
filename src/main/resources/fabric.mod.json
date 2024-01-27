@@ -11,7 +11,7 @@
 		"homepage": "https://github.com/westernat",
 		"sources": "https://gitee.com/westernat233/revjs"
 	},
-	"license": "CC0-1.0",
+	"license": "LGPL v3.0",
 	"icon": "assets/revjs/icon.png",
 	"environment": "*",
 	"entrypoints": {
