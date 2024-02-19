@@ -18,6 +18,6 @@ public class RevJSPlugin extends KubeJSPlugin {
     @Override
     public void onServerReload() {
         RevelationRegistry.clear();
-        RevJS.REVELATION.post(ScriptType.SERVER, new RevelationEventJS());
+        RevJS.REVELATION.post(ScriptType.SERVER, RevelationEventJS.INSTANCE);
     }
 }
